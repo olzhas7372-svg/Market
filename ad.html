@@ -1,0 +1,42 @@
+<h2>{{ ad[1] }}</h2>
+
+{% if ad[5] %}
+<img src="/static/uploads/{{ ad[5] }}" width="300">
+{% endif %}
+
+<p>{{ ad[2] }}</p>
+
+<h3>Чат</h3>
+
+<ul id="messages"></ul>
+<input id="msg">
+<button onclick="sendMsg()">Отправить</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+<script>
+var socket = io()
+var ad_id = {{ ad[0] }}
+
+socket.emit("join", {ad_id: ad_id})
+
+fetch("/messages/" + ad_id)
+.then(r=>r.json())
+.then(d=>{
+d.messages.forEach(m=>{
+let li=document.createElement("li")
+li.innerText=m[0]+": "+m[1]
+messages.appendChild(li)
+})
+})
+
+function sendMsg(){
+let msg=document.getElementById("msg").value
+
+socket.emit("send_message",{
+ad_id:ad_id,
+sender:"user",
+text:msg
+})
+}
+</script>
