@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="logo">kolesa.kz clone</div>
+
+<div>
+{% if session.user_id %}
+<a href="/logout">Выйти</a>
+{% else %}
+<a href="/login">Вход</a>
+<a href="/register">Регистрация</a>
+{% endif %}
+</div>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+<input name="title" placeholder="Название">
+<input name="description" placeholder="Описание">
+<input type="file" name="image">
+<button>Добавить</button>
+</form>
+
+<div class="grid">
+{% for ad in ads %}
+<a href="/ad/{{ ad[0] }}" class="card">
+
+{% if ad[5] %}
+<img src="/static/uploads/{{ ad[5] }}">
+{% endif %}
+
+<div class="card-body">
+<h3>{{ ad[1] }}</h3>
+</div>
+
+</a>
+{% endfor %}
+</div>
+
+</body>
+</html>
